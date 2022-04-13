@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery_laravel/screens/product_details_screen.dart';
+import 'package:food_delivery_laravel/screens/home_screen.dart';
+import 'package:get/get.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,13 +12,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Food Devlivery',
+      title: 'Food Delivery',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const ProductDetailsScreen(),
+      home: const HomeScreen(),
     );
   }
 }

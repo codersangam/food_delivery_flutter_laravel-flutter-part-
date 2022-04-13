@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_laravel/constants.dart';
 import 'package:food_delivery_laravel/widgets/app_icon.dart';
+import 'package:get/get.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../widgets/big_text.dart';
@@ -36,8 +37,14 @@ class ProductDetailsScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  AppIcon(
-                      iconColor: primaryColor, icon: Icons.arrow_back_ios_new),
+                  InkWell(
+                    onTap: () {
+                      Get.back();
+                    },
+                    child: AppIcon(
+                        iconColor: primaryColor,
+                        icon: Icons.arrow_back_ios_new),
+                  ),
                   AppIcon(iconColor: primaryColor, icon: Icons.shopping_basket),
                 ],
               )),
