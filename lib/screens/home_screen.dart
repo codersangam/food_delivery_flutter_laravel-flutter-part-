@@ -1,5 +1,7 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:food_delivery_laravel/controllers/popular_product_controller.dart';
+import 'package:food_delivery_laravel/models/product_model.dart';
 import 'package:food_delivery_laravel/screens/product_details_screen.dart';
 import 'package:food_delivery_laravel/widgets/big_text.dart';
 import 'package:food_delivery_laravel/widgets/icon_text.dart';
@@ -46,30 +48,40 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const HomeScreenHeader().p(8),
-                VxBox(
-                  child: PageView.builder(
-                    itemCount: 5,
+                GetBuilder<PopularProductController>(
+                    builder: (popularProducts) {
+                  return VxBox(
+                      child: PageView.builder(
+                    itemCount: popularProducts.popularProductList.length,
                     controller: _pageController,
                     itemBuilder: (context, index) {
-                      return const HomeScreenBody();
+                      var data = popularProducts.popularProductList[index];
+                      return HomeScreenBody(
+                        data: data,
+                      );
                     },
-                  ),
-                ).make().h(320),
+                  )).make().h(320);
+                }),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    DotsIndicator(
-                      dotsCount: 5,
-                      position: _currentPageValue,
-                      decorator: DotsDecorator(
-                        size: const Size.square(9.0),
-                        activeColor: primaryColor,
-                        activeSize: const Size(18.0, 9.0),
-                        activeShape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0),
+                    GetBuilder<PopularProductController>(
+                        builder: (popularProducts) {
+                      return DotsIndicator(
+                        dotsCount: popularProducts.popularProductList.isEmpty
+                            ? 1
+                            : popularProducts.popularProductList.length,
+                        position: _currentPageValue,
+                        decorator: DotsDecorator(
+                          size: const Size.square(9.0),
+                          activeColor: primaryColor,
+                          activeSize: const Size(18.0, 9.0),
+                          activeShape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
                         ),
-                      ),
-                    ),
+                      );
+                    }),
                   ],
                 ),
                 10.heightBox,
@@ -188,7 +200,10 @@ class PopularItemsList extends StatelessWidget {
 class HomeScreenBody extends StatelessWidget {
   const HomeScreenBody({
     Key? key,
+    required this.data,
   }) : super(key: key);
+
+  final ProductModel data;
 
   @override
   Widget build(BuildContext context) {
@@ -204,10 +219,10 @@ class HomeScreenBody extends StatelessWidget {
             margin: const EdgeInsets.only(left: 5, right: 5),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30),
-              image: const DecorationImage(
+              image: DecorationImage(
                 fit: BoxFit.cover,
                 image: NetworkImage(
-                  'https://demo3.codersangam.com/wp-content/uploads/2022/04/057d06e00f4c9d437ef64baee9f7bca6.webp',
+                  "http://mvs.bslmeiyu.com/uploads/" + data.img.toString(),
                 ),
               ),
             ),
@@ -232,7 +247,7 @@ class HomeScreenBody extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const BigText(text: 'Special Chinese Pizza'),
+                    BigText(text: data.name.toString()),
                     Row(
                       children: [
                         VxRating(
@@ -240,7 +255,7 @@ class HomeScreenBody extends StatelessWidget {
                           count: 5,
                         ),
                         5.widthBox,
-                        '4.5'.text.color(Vx.gray400).make(),
+                        '${data.stars}'.text.color(Vx.gray400).make(),
                         10.widthBox,
                         '1287'.text.color(Vx.gray400).make(),
                         5.widthBox,
