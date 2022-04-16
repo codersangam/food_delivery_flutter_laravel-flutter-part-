@@ -1,3 +1,6 @@
-import 'package:flutter/material.dart';
-
-Color primaryColor = const Color(0xff89D9D0);
+class Constants {
+  static String appBaseUrl = "http://mvs.bslmeiyu.com";
+  static String popularProductsUrl = "/api/v1/products/popular";
+  static String recommendedProductsUrl = "/api/v1/products/recommended";
+  static String token = "DBtoken";
+}

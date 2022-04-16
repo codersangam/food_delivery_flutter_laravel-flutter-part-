@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_laravel/constants.dart';
+import 'package:food_delivery_laravel/models/product_model.dart';
+import '/colors.dart';
 import 'package:food_delivery_laravel/widgets/app_icon.dart';
 import 'package:get/get.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -8,7 +10,9 @@ import '../widgets/big_text.dart';
 import '../widgets/icon_text.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
-  const ProductDetailsScreen({Key? key}) : super(key: key);
+  const ProductDetailsScreen({Key? key, required this.data}) : super(key: key);
+
+  final ProductModel data;
 
   @override
   Widget build(BuildContext context) {
@@ -21,11 +25,11 @@ class ProductDetailsScreen extends StatelessWidget {
             child: Container(
               height: 350,
               width: MediaQuery.of(context).size.width,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 image: DecorationImage(
                   fit: BoxFit.cover,
                   image: NetworkImage(
-                      'https://demo3.codersangam.com/wp-content/uploads/2022/04/057d06e00f4c9d437ef64baee9f7bca6.webp'),
+                      Constants.appBaseUrl + "/uploads/" + data.img.toString()),
                 ),
               ),
             ),
@@ -66,16 +70,16 @@ class ProductDetailsScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const BigText(text: 'Special Chinese Pizza'),
+                    BigText(text: data.name.toString()),
                     10.heightBox,
                     Row(
                       children: [
                         VxRating(
                           onRatingUpdate: (value) {},
-                          count: 5,
+                          count: data.stars!.toInt(),
                         ),
                         5.widthBox,
-                        '4.5'.text.color(Vx.gray400).make(),
+                        '${data.stars}'.text.color(Vx.gray400).make(),
                         10.widthBox,
                         '1287'.text.color(Vx.gray400).make(),
                         5.widthBox,
@@ -101,9 +105,12 @@ class ProductDetailsScreen extends StatelessWidget {
                       ],
                     ),
                     30.heightBox,
-                    'pizza, dish of Italian origin consisting of a flattened disk of bread dough topped with some combination of olive oil, oregano, tomato, olives, mozzarella or other cheese, and many other ingredients, baked quickly—usually, in a commercial setting, using a wood-fired oven heated to a very high temperature—and served hot.'
-                        .text
-                        .make()
+                    SingleChildScrollView(
+                      child: data.description!.text
+                          .textStyle(const TextStyle(height: 1.5))
+                          .lg
+                          .make(),
+                    ).expand()
                   ],
                 ),
               ),

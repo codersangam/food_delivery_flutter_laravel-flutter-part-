@@ -1,1 +1,4 @@
-GET https://mvs.bslmeiyu.com/api/v1/products/popular
+# GET https://mvs.bslmeiyu.com/api/v1/products/popular
+
+
+GET https://mvs.bslmeiyu.com/api/v1/products/recommended
