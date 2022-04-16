@@ -1,6 +1,8 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:food_delivery_laravel/constants.dart';
 import 'package:food_delivery_laravel/controllers/popular_product_controller.dart';
+import 'package:food_delivery_laravel/controllers/recommended_product_controller.dart';
 import 'package:food_delivery_laravel/models/product_model.dart';
 import 'package:food_delivery_laravel/screens/product_details_screen.dart';
 import 'package:food_delivery_laravel/widgets/big_text.dart';
@@ -9,7 +11,7 @@ import 'package:food_delivery_laravel/widgets/small_text.dart';
 import 'package:get/get.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-import '../constants.dart';
+import '../colors.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -50,17 +52,22 @@ class _HomeScreenState extends State<HomeScreen> {
                 const HomeScreenHeader().p(8),
                 GetBuilder<PopularProductController>(
                     builder: (popularProducts) {
-                  return VxBox(
-                      child: PageView.builder(
-                    itemCount: popularProducts.popularProductList.length,
-                    controller: _pageController,
-                    itemBuilder: (context, index) {
-                      var data = popularProducts.popularProductList[index];
-                      return HomeScreenBody(
-                        data: data,
-                      );
-                    },
-                  )).make().h(320);
+                  return popularProducts.isLoading
+                      ? VxBox(
+                          child: PageView.builder(
+                          itemCount: popularProducts.popularProductList.length,
+                          controller: _pageController,
+                          itemBuilder: (context, index) {
+                            var data =
+                                popularProducts.popularProductList[index];
+                            return HomeScreenBody(
+                              data: data,
+                            );
+                          },
+                        )).make().h(320)
+                      : const Center(
+                          child: CircularProgressIndicator(),
+                        );
                 }),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -87,19 +94,31 @@ class _HomeScreenState extends State<HomeScreen> {
                 10.heightBox,
                 const Padding(
                   padding: EdgeInsets.only(left: 15, right: 15),
-                  child: BigText(text: 'Popular Items'),
+                  child: BigText(text: 'Recommended Items'),
                 ),
                 20.heightBox,
-                VxBox(
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: 10,
-                    itemBuilder: (context, index) {
-                      return const PopularItemsList();
-                    },
-                  ),
-                ).make(),
+                GetBuilder<RecommendedProductController>(
+                    builder: (recommendedProduct) {
+                  return recommendedProduct.isLoading
+                      ? VxBox(
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: recommendedProduct
+                                .recommendedProductList.length,
+                            itemBuilder: (context, index) {
+                              var data = recommendedProduct
+                                  .recommendedProductList[index];
+                              return RecommendedItemsList(
+                                data: data,
+                              );
+                            },
+                          ),
+                        ).make()
+                      : const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                }),
               ],
             ),
           ).make(),
@@ -109,16 +128,19 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class PopularItemsList extends StatelessWidget {
-  const PopularItemsList({
+class RecommendedItemsList extends StatelessWidget {
+  const RecommendedItemsList({
     Key? key,
+    required this.data,
   }) : super(key: key);
+
+  final ProductModel data;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Get.to(() => const ProductDetailsScreen(),
+        Get.to(() => ProductDetailsScreen(data: data),
             transition: Transition.fadeIn);
       },
       child: Container(
@@ -129,11 +151,12 @@ class PopularItemsList extends StatelessWidget {
               width: 120,
               height: 120,
               decoration: BoxDecoration(
+                color: primaryColor,
                 borderRadius: BorderRadius.circular(30),
-                image: const DecorationImage(
+                image: DecorationImage(
                   fit: BoxFit.cover,
                   image: NetworkImage(
-                    'https://d1csarkz8obe9u.cloudfront.net/posterpreviews/pizza-banner-advertising-design-template-d442c4deeb024c0d9f066a4b0915840a_screen.jpg?ts=1595913950',
+                    Constants.appBaseUrl + "/uploads/" + data.img.toString(),
                   ),
                 ),
               ),
@@ -161,12 +184,12 @@ class PopularItemsList extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const BigText(
-                      text: 'Delicious Pizza Over Nepal Soon',
+                    BigText(
+                      text: data.name.toString(),
                       textOverflow: TextOverflow.ellipsis,
                     ),
-                    const SmallText(
-                      text: 'Best Restaurant in Nepal',
+                    SmallText(
+                      text: data.location.toString(),
                       color: Vx.gray400,
                     ),
                     Row(
@@ -209,7 +232,10 @@ class HomeScreenBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Get.to(() => const ProductDetailsScreen(),
+        Get.to(
+            () => ProductDetailsScreen(
+                  data: data,
+                ),
             transition: Transition.leftToRightWithFade);
       },
       child: Stack(
@@ -218,11 +244,12 @@ class HomeScreenBody extends StatelessWidget {
             height: 220,
             margin: const EdgeInsets.only(left: 5, right: 5),
             decoration: BoxDecoration(
+              color: primaryColor,
               borderRadius: BorderRadius.circular(30),
               image: DecorationImage(
                 fit: BoxFit.cover,
                 image: NetworkImage(
-                  "http://mvs.bslmeiyu.com/uploads/" + data.img.toString(),
+                  Constants.appBaseUrl + "/uploads/" + data.img.toString(),
                 ),
               ),
             ),
@@ -252,7 +279,7 @@ class HomeScreenBody extends StatelessWidget {
                       children: [
                         VxRating(
                           onRatingUpdate: (value) {},
-                          count: 5,
+                          count: data.stars!,
                         ),
                         5.widthBox,
                         '${data.stars}'.text.color(Vx.gray400).make(),
