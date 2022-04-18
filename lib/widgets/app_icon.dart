@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:line_icons/line_icon.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class AppIcon extends StatelessWidget {
@@ -11,7 +12,7 @@ class AppIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return VxBox(
-      child: Icon(
+      child: LineIcon(
         icon,
         color: iconColor,
       ),

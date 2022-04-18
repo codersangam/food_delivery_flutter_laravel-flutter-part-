@@ -122,7 +122,7 @@ class ProductDetailsScreen extends StatelessWidget {
         height: 120,
         padding: const EdgeInsets.only(left: 15, right: 15),
         decoration: const BoxDecoration(
-          color: Vx.gray200,
+          color: Vx.gray100,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(30),
             topRight: Radius.circular(30),

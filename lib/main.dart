@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_laravel/controllers/popular_product_controller.dart';
-import 'package:food_delivery_laravel/screens/home_screen.dart';
+import 'package:food_delivery_laravel/screens/splash/splash_screen.dart';
 import 'package:get/get.dart';
 import 'controllers/recommended_product_controller.dart';
 import 'helpers/dependencies.dart' as dependencies;
@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const HomeScreen(),
+      home: const SplashScreen(),
     );
   }
 }
