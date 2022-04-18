@@ -42,87 +42,83 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: VxBox(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const HomeScreenHeader().p(8),
-                GetBuilder<PopularProductController>(
-                    builder: (popularProducts) {
-                  return popularProducts.isLoading
-                      ? VxBox(
-                          child: PageView.builder(
-                          itemCount: popularProducts.popularProductList.length,
-                          controller: _pageController,
+    return SafeArea(
+      child: SingleChildScrollView(
+        child: VxBox(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const HomeScreenHeader().p(8),
+              GetBuilder<PopularProductController>(builder: (popularProducts) {
+                return popularProducts.isLoading
+                    ? VxBox(
+                        child: PageView.builder(
+                        itemCount: popularProducts.popularProductList.length,
+                        controller: _pageController,
+                        itemBuilder: (context, index) {
+                          var data = popularProducts.popularProductList[index];
+                          return HomeScreenBody(
+                            data: data,
+                          );
+                        },
+                      )).make().h(320)
+                    : const Center(
+                        child: CircularProgressIndicator(),
+                      );
+              }),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GetBuilder<PopularProductController>(
+                      builder: (popularProducts) {
+                    return DotsIndicator(
+                      dotsCount: popularProducts.popularProductList.isEmpty
+                          ? 1
+                          : popularProducts.popularProductList.length,
+                      position: _currentPageValue,
+                      decorator: DotsDecorator(
+                        size: const Size.square(9.0),
+                        activeColor: primaryColor,
+                        activeSize: const Size(18.0, 9.0),
+                        activeShape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                      ),
+                    );
+                  }),
+                ],
+              ),
+              10.heightBox,
+              const Padding(
+                padding: EdgeInsets.only(left: 15, right: 15),
+                child: BigText(text: 'Recommended Items'),
+              ),
+              20.heightBox,
+              GetBuilder<RecommendedProductController>(
+                  builder: (recommendedProduct) {
+                return recommendedProduct.isLoading
+                    ? VxBox(
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount:
+                              recommendedProduct.recommendedProductList.length,
                           itemBuilder: (context, index) {
-                            var data =
-                                popularProducts.popularProductList[index];
-                            return HomeScreenBody(
+                            var data = recommendedProduct
+                                .recommendedProductList[index];
+                            return RecommendedItemsList(
                               data: data,
                             );
                           },
-                        )).make().h(320)
-                      : const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                }),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    GetBuilder<PopularProductController>(
-                        builder: (popularProducts) {
-                      return DotsIndicator(
-                        dotsCount: popularProducts.popularProductList.isEmpty
-                            ? 1
-                            : popularProducts.popularProductList.length,
-                        position: _currentPageValue,
-                        decorator: DotsDecorator(
-                          size: const Size.square(9.0),
-                          activeColor: primaryColor,
-                          activeSize: const Size(18.0, 9.0),
-                          activeShape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                          ),
                         ),
+                      ).make()
+                    : const Center(
+                        child: CircularProgressIndicator(),
                       );
-                    }),
-                  ],
-                ),
-                10.heightBox,
-                const Padding(
-                  padding: EdgeInsets.only(left: 15, right: 15),
-                  child: BigText(text: 'Recommended Items'),
-                ),
-                20.heightBox,
-                GetBuilder<RecommendedProductController>(
-                    builder: (recommendedProduct) {
-                  return recommendedProduct.isLoading
-                      ? VxBox(
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: recommendedProduct
-                                .recommendedProductList.length,
-                            itemBuilder: (context, index) {
-                              var data = recommendedProduct
-                                  .recommendedProductList[index];
-                              return RecommendedItemsList(
-                                data: data,
-                              );
-                            },
-                          ),
-                        ).make()
-                      : const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                }),
-              ],
-            ),
-          ).make(),
-        ),
+              }),
+            ],
+          ),
+        ).make(),
       ),
     );
   }
