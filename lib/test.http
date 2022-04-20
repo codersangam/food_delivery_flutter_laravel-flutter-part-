@@ -1,4 +1,11 @@
 # GET https://mvs.bslmeiyu.com/api/v1/products/popular
 
 
-GET https://mvs.bslmeiyu.com/api/v1/products/recommended
+# GET https://mvs.bslmeiyu.com/api/v1/products/recommended
+
+
+# GET http://127.0.0.1:8000/api/v1/products/recommended
+
+# GET http://127.0.0.1:8000/api/v1/products/popular
+
+GET http://127.0.0.1:8000/api/v1/products/drinks
