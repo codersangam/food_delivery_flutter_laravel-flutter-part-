@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery_laravel/colors.dart';
 import 'package:food_delivery_laravel/controllers/popular_product_controller.dart';
+import 'package:food_delivery_laravel/screens/auth/login_screen.dart';
+import 'package:food_delivery_laravel/screens/auth/register_screen.dart';
 import 'package:food_delivery_laravel/screens/splash/splash_screen.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'controllers/recommended_product_controller.dart';
 import 'helpers/dependencies.dart' as dependencies;
 
@@ -23,9 +27,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Food Delivery',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        fontFamily: GoogleFonts.poppins().fontFamily,
+        primaryColor: primaryColor,
       ),
-      home: const SplashScreen(),
+      home: const LoginScreen(),
     );
   }
 }

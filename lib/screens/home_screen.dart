@@ -71,8 +71,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                 );
                               },
                             )).make().h(320)
-                          : const Center(
-                              child: CircularProgressIndicator(),
+                          : Center(
+                              child: CircularProgressIndicator(
+                                color: primaryColor,
+                              ),
                             );
                     },
                   ),
@@ -122,8 +124,10 @@ class _HomeScreenState extends State<HomeScreen> {
                               },
                             ),
                           ).make()
-                        : const Center(
-                            child: CircularProgressIndicator(),
+                        : Center(
+                            child: CircularProgressIndicator(
+                              color: primaryColor,
+                            ),
                           );
                   }),
                 ],
