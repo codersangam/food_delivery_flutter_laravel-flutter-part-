@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_laravel/colors.dart';
 import 'package:food_delivery_laravel/screens/cart_screen.dart';
-import 'package:food_delivery_laravel/screens/profile_screen.dart';
+import 'package:food_delivery_laravel/screens/profile/profile_screen.dart';
 import 'package:food_delivery_laravel/screens/search_screen.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
@@ -52,7 +52,7 @@ class _MainScreenState extends State<MainScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               duration: const Duration(milliseconds: 400),
               tabBackgroundColor: Colors.grey[100]!,
-              color: Colors.black,
+              color: Colors.deepPurple,
               tabs: const [
                 GButton(
                   icon: LineIcons.home,
