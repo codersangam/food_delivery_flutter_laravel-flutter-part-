@@ -21,6 +21,7 @@ class LoginScreen extends StatelessWidget {
             120.heightBox,
             VxCircle(
               radius: 100,
+              backgroundColor: Colors.white,
               backgroundImage: const DecorationImage(
                 image: AssetImage('assets/images/logopart1.png'),
                 fit: BoxFit.cover,
