@@ -40,6 +40,7 @@ dependencies:
   google_nav_bar: ^5.0.6
   line_icons: ^2.0.1
   google_fonts: ^2.3.1
+  shared_preferences: ^2.0.13
 
 dev_dependencies:
   flutter_test:

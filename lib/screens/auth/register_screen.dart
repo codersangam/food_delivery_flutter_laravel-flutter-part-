@@ -1,6 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery_laravel/colors.dart';
+import 'package:food_delivery_laravel/controllers/auth_controller.dart';
+import 'package:food_delivery_laravel/models/user_model.dart';
 import 'package:get/get.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -9,10 +11,47 @@ class RegisterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController emailController = TextEditingController();
-    final TextEditingController passwordController = TextEditingController();
-    final TextEditingController phoneController = TextEditingController();
-    final TextEditingController nameController = TextEditingController();
+    var emailController = TextEditingController();
+    var passwordController = TextEditingController();
+    var phoneController = TextEditingController();
+    var nameController = TextEditingController();
+
+    void _registration() {
+      var authController = Get.find<AuthController>();
+      String name = nameController.text.trim();
+      String phone = phoneController.text.trim();
+      String email = emailController.text.trim();
+      String password = passwordController.text.trim();
+
+      if (name.isEmpty) {
+        Get.snackbar('Error', 'name field is mandatory');
+      } else if (phone.isEmpty) {
+        Get.snackbar('Error', 'phone field is mandatory');
+      } else if (!GetUtils.isEmail(email)) {
+        Get.snackbar('Error', 'email address is not valid.');
+      } else if (password.isEmpty) {
+        Get.snackbar('Error', 'password field is mandatory.');
+      } else if (password.length < 6) {
+        Get.snackbar(
+            'Error', 'password length should be greater than 6 characters');
+      } else {
+        UserModel userModel = UserModel(
+          name: name,
+          phone: phone,
+          email: email,
+          password: password,
+        );
+
+        authController.registration(userModel).then((status) {
+          if (status.isSuccess) {
+            print('Registration Successful');
+          } else {
+            Get.snackbar('Error', status.message);
+          }
+        });
+      }
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -23,6 +62,7 @@ class RegisterScreen extends StatelessWidget {
             120.heightBox,
             VxCircle(
               radius: 100,
+              backgroundColor: Colors.white,
               backgroundImage: const DecorationImage(
                 image: AssetImage('assets/images/logopart1.png'),
                 fit: BoxFit.cover,
@@ -61,8 +101,8 @@ class RegisterScreen extends StatelessWidget {
               textInputType: TextInputType.phone,
             ),
             50.heightBox,
-            InkWell(
-              onTap: () {},
+            GestureDetector(
+              onTap: () => _registration(),
               child: VxBox(
                 child: 'Register'.text.white.xl.makeCentered(),
               )
@@ -74,13 +114,23 @@ class RegisterScreen extends StatelessWidget {
             10.heightBox,
             RichText(
               text: TextSpan(
-                recognizer: TapGestureRecognizer()..onTap = () => Get.back(),
-                text: 'Already have an account?',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.grey[500],
-                ),
-              ),
+                  text: 'Already have an account?',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.grey[500],
+                  ),
+                  children: [
+                    TextSpan(
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () => Get.back(),
+                      text: 'Login',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey[500],
+                      ),
+                    ),
+                  ]),
             ),
           ],
         ),
