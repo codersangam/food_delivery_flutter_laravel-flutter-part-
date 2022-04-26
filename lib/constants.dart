@@ -13,8 +13,20 @@ class Constants {
   static String drinkProductsUrl = "/api/v1/products/drinks";
 
   // Token
-  static String token = "Hariomshop";
+  static String token = "";
 
   // Register Users URL
   static String registerUsersUrl = "/api/v1/auth/register";
+
+  // Register Users URL
+  static String loginUsersUrl = "/api/v1/auth/login";
+
+  // Email token
+  static String email = "";
+
+  // Password token
+  static String password = "";
+
+  // User Info URL
+  static String userInfo = "/api/v1/customer/info";
 }
