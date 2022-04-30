@@ -29,4 +29,10 @@ class Constants {
 
   // User Info URL
   static String userInfo = "/api/v1/customer/info";
+
+  // GeoCode URL
+  static String geoCodeUrl = '/api/v1/config/geocode-api';
+
+  // User Address
+  static String userAddress = 'user_address';
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_laravel/colors.dart';
+import 'package:food_delivery_laravel/screens/add_address_screen.dart';
 import 'package:food_delivery_laravel/screens/cart_screen.dart';
 import 'package:food_delivery_laravel/screens/profile/profile_screen.dart';
 import 'package:food_delivery_laravel/screens/search_screen.dart';
@@ -19,7 +20,7 @@ class _MainScreenState extends State<MainScreen> {
 
   static const List<Widget> _pages = [
     HomeScreen(),
-    SearchScreen(),
+    AddAddressScreen(),
     CartScreen(),
     ProfileScreen(),
   ];
@@ -52,7 +53,7 @@ class _MainScreenState extends State<MainScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               duration: const Duration(milliseconds: 400),
               tabBackgroundColor: Colors.grey[100]!,
-              color: Colors.deepPurple,
+              color: Colors.black,
               tabs: const [
                 GButton(
                   icon: LineIcons.home,
