@@ -1,8 +1,10 @@
 import 'package:food_delivery_laravel/constants.dart';
+import 'package:food_delivery_laravel/controllers/location_controller.dart';
 import 'package:food_delivery_laravel/controllers/popular_product_controller.dart';
 import 'package:food_delivery_laravel/controllers/auth_controller.dart';
 import 'package:food_delivery_laravel/controllers/user_controller.dart';
 import 'package:food_delivery_laravel/data/api/api_client.dart';
+import 'package:food_delivery_laravel/data/repository/location_repo.dart';
 import 'package:food_delivery_laravel/data/repository/popular_product_repo.dart';
 import 'package:food_delivery_laravel/data/repository/auth_repo.dart';
 import 'package:food_delivery_laravel/data/repository/user_repo.dart';
@@ -25,12 +27,14 @@ Future<void> init() async {
   Get.lazyPut(
       () => AuthRepo(sharedPreferences: Get.find(), apiClient: Get.find()));
   Get.lazyPut(() => UserRepo(apiClient: Get.find()));
+  Get.lazyPut(
+      () => LocationRepo(apiClient: Get.find(), sharedPreferences: Get.find()));
 
   // Controller Initialization
   Get.lazyPut(() => PopularProductController(popularProductRepo: Get.find()));
   Get.lazyPut(
       () => RecommendedProductController(recommendedProductRepo: Get.find()));
   Get.lazyPut(() => AuthController(authRepo: Get.find()));
-
   Get.lazyPut(() => UserController(userRepo: Get.find()));
+  Get.lazyPut(() => LocationController(locationRepo: Get.find()));
 }

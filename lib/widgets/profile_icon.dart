@@ -37,7 +37,7 @@ class ProfileIcon extends StatelessWidget {
             ),
           ),
           10.widthBox,
-          data.text.bold.xl.make(),
+          data.text.bold.xl.maxLines(1).make().expand(),
         ],
       ),
     );
