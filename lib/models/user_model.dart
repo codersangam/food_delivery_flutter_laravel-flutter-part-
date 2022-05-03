@@ -28,6 +28,7 @@ class UserModel {
         id: json['id'],
         name: json['f_name'],
         email: json['email'],
+        phone: json['phone'],
         password: json['password'],
         orderCount: json['order_count']);
   }
