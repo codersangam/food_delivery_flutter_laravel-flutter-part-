@@ -35,4 +35,10 @@ class Constants {
 
   // User Address
   static String userAddress = 'user_address';
+
+  // Add user address
+  static String addUserAddress = '/api/v1/customer/address/add';
+
+  // Get user address
+  static String getUserAddressList = '/api/v1/customer/address/list';
 }

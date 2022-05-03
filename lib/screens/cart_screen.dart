@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery_laravel/controllers/auth_controller.dart';
+import 'package:food_delivery_laravel/controllers/location_controller.dart';
+import 'package:food_delivery_laravel/screens/add_address_screen.dart';
+import 'package:food_delivery_laravel/screens/auth/login_screen.dart';
+import 'package:food_delivery_laravel/screens/main_screen.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -134,14 +139,27 @@ class CartScreen extends StatelessWidget {
               ),
               child: 'Rs. 3500'.text.xl2.bold.makeCentered(),
             ),
-            Container(
-              height: 60,
-              width: 150,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: primaryColor,
+            InkWell(
+              onTap: () {
+                if (Get.find<AuthController>().userLoggedIn()) {
+                  if (Get.find<LocationController>().addressList.isEmpty) {
+                    Get.to(() => const AddAddressScreen());
+                  } else {
+                    Get.to(() => const MainScreen());
+                  }
+                } else {
+                  Get.to(() => const LoginScreen());
+                }
+              },
+              child: Container(
+                height: 60,
+                width: 150,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: primaryColor,
+                ),
+                child: 'Checkout'.text.xl.white.makeCentered(),
               ),
-              child: 'Checkout'.text.xl.white.makeCentered(),
             ),
           ],
         ),

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_laravel/colors.dart';
 import 'package:food_delivery_laravel/controllers/auth_controller.dart';
+import 'package:food_delivery_laravel/controllers/location_controller.dart';
 import 'package:food_delivery_laravel/controllers/user_controller.dart';
+import 'package:food_delivery_laravel/screens/add_address_screen.dart';
 import 'package:food_delivery_laravel/screens/auth/login_screen.dart';
 import 'package:food_delivery_laravel/widgets/big_text.dart';
 import 'package:get/get.dart';
@@ -70,10 +72,33 @@ class ProfileScreen extends StatelessWidget {
                             backgroundColor: primaryColor,
                           ),
                           10.heightBox,
-                          const ProfileIcon(
-                            icon: Icons.location_on,
-                            data: 'China',
-                            backgroundColor: Colors.yellow,
+                          GetBuilder<LocationController>(
+                            builder: (locationController) {
+                              if (_userLoggedIn &&
+                                  locationController.addressList.isEmpty) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    Get.to(() => const AddAddressScreen());
+                                  },
+                                  child: const ProfileIcon(
+                                    icon: Icons.location_on,
+                                    data: 'Get Your Address',
+                                    backgroundColor: Colors.yellow,
+                                  ),
+                                );
+                              } else {
+                                return GestureDetector(
+                                  onTap: () {
+                                    Get.to(() => const AddAddressScreen());
+                                  },
+                                  child: const ProfileIcon(
+                                    icon: Icons.location_on,
+                                    data: 'Nepal',
+                                    backgroundColor: Colors.yellow,
+                                  ),
+                                );
+                              }
+                            },
                           ),
                           10.heightBox,
                           ProfileIcon(
@@ -86,6 +111,10 @@ class ProfileScreen extends StatelessWidget {
                             onTap: () {
                               if (Get.find<AuthController>().userLoggedIn()) {
                                 Get.find<AuthController>().logout();
+                                Get.find<LocationController>()
+                                    .clearAddressList();
+                                Get.offAll(() => const LoginScreen());
+                              } else {
                                 Get.offAll(() => const LoginScreen());
                               }
                             },
