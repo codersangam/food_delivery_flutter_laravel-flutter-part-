@@ -4,6 +4,7 @@ import 'package:food_delivery_laravel/controllers/auth_controller.dart';
 import 'package:food_delivery_laravel/controllers/location_controller.dart';
 import 'package:food_delivery_laravel/controllers/user_controller.dart';
 import 'package:food_delivery_laravel/models/address_model.dart';
+import 'package:food_delivery_laravel/screens/address/pick_location_screen.dart';
 import 'package:food_delivery_laravel/screens/main_screen.dart';
 import 'package:food_delivery_laravel/widgets/profile_icon.dart';
 import 'package:get/get.dart';
@@ -36,6 +37,11 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
       Get.find<UserController>().getUserInfo();
     }
     if (Get.find<LocationController>().addressList.isNotEmpty) {
+      //* bug fix
+      if (Get.find<LocationController>().getUserAddressFromStorage() == "") {
+        Get.find<LocationController>()
+            .saveUserAddress(Get.find<LocationController>().addressList.last);
+      }
       Get.find<LocationController>().getUserAddress();
       _cameraPosition = CameraPosition(
           target: LatLng(
@@ -75,6 +81,8 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                   '${locationController.placemark.locality ?? ''}'
                   '${locationController.placemark.postalCode ?? ''}'
                   '${locationController.placemark.country ?? ''}';
+              // ignore: avoid_print
+              print('Address in my view is ' + _addressController.text);
               return SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -104,6 +112,14 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                                 _cameraPosition = position),
                             onMapCreated: (GoogleMapController controller) {
                               locationController.setMapController(controller);
+                            },
+                            onTap: (latlng) {
+                              Get.to(() => PickLocationScreen(
+                                    fromRegister: false,
+                                    fromAddress: true,
+                                    googleMapController:
+                                        locationController.googleMapController,
+                                  ));
                             },
                           ),
                         ],

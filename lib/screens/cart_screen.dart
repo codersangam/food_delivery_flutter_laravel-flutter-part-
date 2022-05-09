@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_laravel/controllers/auth_controller.dart';
 import 'package:food_delivery_laravel/controllers/location_controller.dart';
-import 'package:food_delivery_laravel/screens/add_address_screen.dart';
+import 'package:food_delivery_laravel/screens/address/add_address_screen.dart';
 import 'package:food_delivery_laravel/screens/auth/login_screen.dart';
 import 'package:food_delivery_laravel/screens/main_screen.dart';
 import 'package:get/get.dart';

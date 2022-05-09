@@ -1,7 +1,7 @@
 class Constants {
   // Base URL
   // static String appBaseUrl = "http://127.0.0.1:8000";
-  static String appBaseUrl = "https://food.hariomshop.com";
+  static String appBaseUrl = "https://foody.codersangam.com";
 
   // Get Pouplar Products
   static String popularProductsUrl = "/api/v1/products/popular";

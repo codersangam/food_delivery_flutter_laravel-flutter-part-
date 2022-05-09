@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_laravel/colors.dart';
-import 'package:food_delivery_laravel/screens/add_address_screen.dart';
+import 'package:food_delivery_laravel/screens/address/add_address_screen.dart';
 import 'package:food_delivery_laravel/screens/cart_screen.dart';
 import 'package:food_delivery_laravel/screens/profile/profile_screen.dart';
-import 'package:food_delivery_laravel/screens/search_screen.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
 import 'home_screen.dart';
