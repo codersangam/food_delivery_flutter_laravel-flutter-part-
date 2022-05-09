@@ -3,7 +3,7 @@ import 'package:food_delivery_laravel/colors.dart';
 import 'package:food_delivery_laravel/controllers/auth_controller.dart';
 import 'package:food_delivery_laravel/controllers/location_controller.dart';
 import 'package:food_delivery_laravel/controllers/user_controller.dart';
-import 'package:food_delivery_laravel/screens/add_address_screen.dart';
+import 'package:food_delivery_laravel/screens/address/add_address_screen.dart';
 import 'package:food_delivery_laravel/screens/auth/login_screen.dart';
 import 'package:food_delivery_laravel/widgets/big_text.dart';
 import 'package:get/get.dart';
@@ -13,9 +13,14 @@ import 'package:velocity_x/velocity_x.dart';
 
 import '../../widgets/profile_icon.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
 
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     bool _userLoggedIn = Get.find<AuthController>().userLoggedIn();
@@ -101,12 +106,6 @@ class ProfileScreen extends StatelessWidget {
                             },
                           ),
                           10.heightBox,
-                          ProfileIcon(
-                            icon: Icons.message,
-                            data: 'None',
-                            backgroundColor: primaryColor,
-                          ),
-                          10.heightBox,
                           GestureDetector(
                             onTap: () {
                               if (Get.find<AuthController>().userLoggedIn()) {
@@ -118,10 +117,10 @@ class ProfileScreen extends StatelessWidget {
                                 Get.offAll(() => const LoginScreen());
                               }
                             },
-                            child: const ProfileIcon(
+                            child: ProfileIcon(
                               icon: Icons.logout,
                               data: 'Logout',
-                              backgroundColor: Colors.yellow,
+                              backgroundColor: primaryColor,
                             ),
                           ),
                         ],

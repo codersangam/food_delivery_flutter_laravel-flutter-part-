@@ -46,11 +46,13 @@ class LocationController extends GetxController implements GetxService {
   Map<String, dynamic> get getAddress => _getAddress;
 
   late GoogleMapController _googleMapController;
+  GoogleMapController get googleMapController => _googleMapController;
+
   void setMapController(GoogleMapController googleMapController) {
     _googleMapController = googleMapController;
   }
 
-  final bool _updateAddressData = true;
+  bool _updateAddressData = true;
   void updatePosition(CameraPosition cameraPosition, bool fromAddress) async {
     if (_updateAddressData) {
       _isLoading = true;
@@ -94,6 +96,10 @@ class LocationController extends GetxController implements GetxService {
         // ignore: avoid_print
         print(e.toString());
       }
+      _isLoading = false;
+      update();
+    } else {
+      _updateAddressData = true;
     }
   }
 
@@ -172,6 +178,17 @@ class LocationController extends GetxController implements GetxService {
   void clearAddressList() {
     _addressList = [];
     _allAddressList = [];
+    update();
+  }
+
+  String getUserAddressFromStorage() {
+    return locationRepo.getUserAddress();
+  }
+
+  void setAddAddressData() {
+    _position = _pickPosition;
+    _placeMark = _pickPlaceMark;
+    _updateAddressData = false;
     update();
   }
 }

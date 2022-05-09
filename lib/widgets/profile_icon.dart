@@ -20,12 +20,15 @@ class ProfileIcon extends StatelessWidget {
       height: 70,
       width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.only(left: 15),
-      decoration: BoxDecoration(color: Colors.white, boxShadow: [
-        BoxShadow(
-            blurRadius: 1,
-            offset: const Offset(0, 2),
-            color: Colors.grey.withOpacity(0.2))
-      ]),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadiusDirectional.circular(20),
+          boxShadow: [
+            BoxShadow(
+                blurRadius: 1,
+                offset: const Offset(0, 2),
+                color: Colors.grey.withOpacity(0.2))
+          ]),
       child: Row(
         children: [
           VxCircle(
