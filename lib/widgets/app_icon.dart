@@ -16,6 +16,10 @@ class AppIcon extends StatelessWidget {
         icon,
         color: iconColor,
       ),
-    ).make().wh(40, 40).cornerRadius(35).glassMorphic();
+    )
+        .make()
+        .wh(40, 40)
+        .cornerRadius(35)
+        .glassMorphic(opacity: 1, blur: 5, shadowStrength: 4);
   }
 }

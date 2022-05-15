@@ -60,6 +60,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         backgroundColor: primaryColor,
         title: 'Add Address'.text.makeCentered(),
       ),
@@ -114,12 +115,14 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                               locationController.setMapController(controller);
                             },
                             onTap: (latlng) {
-                              Get.to(() => PickLocationScreen(
-                                    fromRegister: false,
-                                    fromAddress: true,
-                                    googleMapController:
-                                        locationController.googleMapController,
-                                  ));
+                              Get.to(
+                                () => PickLocationScreen(
+                                  fromRegister: false,
+                                  fromAddress: true,
+                                  googleMapController:
+                                      locationController.googleMapController,
+                                ),
+                              );
                             },
                           ),
                         ],

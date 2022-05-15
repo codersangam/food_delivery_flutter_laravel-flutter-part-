@@ -12,12 +12,12 @@ class PickLocationScreen extends StatefulWidget {
       {Key? key,
       required this.fromRegister,
       required this.fromAddress,
-      required this.googleMapController})
+      this.googleMapController})
       : super(key: key);
 
   final bool fromRegister;
   final bool fromAddress;
-  final GoogleMapController googleMapController;
+  final GoogleMapController? googleMapController;
 
   @override
   State<PickLocationScreen> createState() => _PickLocationScreenState();
@@ -25,7 +25,6 @@ class PickLocationScreen extends StatefulWidget {
 
 class _PickLocationScreenState extends State<PickLocationScreen> {
   late LatLng _initialPosition;
-  late GoogleMapController _googleMapController;
   late CameraPosition _cameraPosition;
 
   @override
@@ -108,7 +107,7 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
                                 if (widget.fromAddress) {
                                   // ignore: unnecessary_null_comparison
                                   if (widget.googleMapController != null) {
-                                    widget.googleMapController.moveCamera(
+                                    widget.googleMapController!.moveCamera(
                                       CameraUpdate.newCameraPosition(
                                         CameraPosition(
                                           target: LatLng(
@@ -122,7 +121,12 @@ class _PickLocationScreenState extends State<PickLocationScreen> {
                                     );
                                     locationController.setAddAddressData();
                                   }
-                                  Get.off(() => const AddAddressScreen());
+                                  // Get.back();
+                                  // Get.offAll(() => const AddAddressScreen());
+                                  Get.to(const AddAddressScreen());
+                                  // Navigator.of(context).push(MaterialPageRoute(
+                                  //     builder: (context) =>
+                                  //         const AddAddressScreen()));
                                 }
                               }
                             },

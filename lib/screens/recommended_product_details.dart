@@ -1,21 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery_laravel/constants.dart';
-import 'package:food_delivery_laravel/models/product_model.dart';
-import '/colors.dart';
-import 'package:food_delivery_laravel/widgets/app_icon.dart';
 import 'package:get/get.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:velocity_x/velocity_x.dart';
-
+import '../colors.dart';
+import '../constants.dart';
+import '../controllers/cart_controller.dart';
+import '../controllers/popular_product_controller.dart';
+import '../models/product_model.dart';
+import '../widgets/app_icon.dart';
 import '../widgets/big_text.dart';
 import '../widgets/icon_text.dart';
+import 'cart_screen.dart';
+import 'main_screen.dart';
 
-class ProductDetailsScreen extends StatelessWidget {
-  const ProductDetailsScreen({Key? key, required this.data}) : super(key: key);
+class RecommendedProductDetailsScreen extends StatelessWidget {
+  const RecommendedProductDetailsScreen({Key? key, required this.data})
+      : super(key: key);
 
   final ProductModel data;
 
   @override
   Widget build(BuildContext context) {
+    Get.find<PopularProductController>()
+        .initProduct(data, Get.find<CartController>());
     return Scaffold(
       body: Stack(
         children: [
@@ -43,13 +50,24 @@ class ProductDetailsScreen extends StatelessWidget {
                 children: [
                   InkWell(
                     onTap: () {
-                      Get.back();
+                      Get.to(() => const MainScreen());
                     },
                     child: AppIcon(
                         iconColor: primaryColor,
                         icon: Icons.arrow_back_ios_new),
                   ),
-                  AppIcon(iconColor: primaryColor, icon: Icons.shopping_basket),
+                  InkWell(
+                    onTap: () {
+                      Get.to(() => const CartScreen());
+                    },
+                    child: GetBuilder<PopularProductController>(
+                        builder: (popularProductController) {
+                      return AppIcon(
+                              iconColor: primaryColor,
+                              icon: LineIcons.shoppingCart)
+                          .badge(count: popularProductController.totalItems);
+                    }),
+                  ),
                 ],
               )),
           Positioned(
@@ -118,32 +136,69 @@ class ProductDetailsScreen extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: Container(
-        height: 120,
-        padding: const EdgeInsets.only(left: 15, right: 15),
-        decoration: const BoxDecoration(
-          color: Vx.gray100,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30),
-            topRight: Radius.circular(30),
-          ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const VxStepper(
-              min: 1,
-              step: 1,
+      bottomNavigationBar: GetBuilder<PopularProductController>(
+          builder: (popularProductController) {
+        return Container(
+          height: 120,
+          padding: const EdgeInsets.only(left: 15, right: 15),
+          decoration: const BoxDecoration(
+            color: Vx.gray100,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30),
+              topRight: Radius.circular(30),
             ),
-            ElevatedButton(
-                onPressed: () {},
-                child: 'Add to Cart'.text.make(),
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(primaryColor),
-                )),
-          ],
-        ),
-      ),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                height: 60,
+                width: 120,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Colors.white,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                        onPressed: () {
+                          popularProductController.setQuantity(false);
+                        },
+                        icon: const Icon(LineIcons.minus)),
+                    popularProductController.cartItems.text.xl.make(),
+                    IconButton(
+                        onPressed: () {
+                          popularProductController.setQuantity(true);
+                        },
+                        icon: const Icon(LineIcons.plus)),
+                  ],
+                ),
+              ),
+              InkWell(
+                onTap: () {
+                  popularProductController.addItem(data);
+                },
+                child: Container(
+                  height: 60,
+                  width: 180,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: primaryColor,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      'Rs. ${data.price!}'.text.xl.white.make(),
+                      'Add to Cart'.text.xl.white.make(),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      }),
     );
   }
 }
