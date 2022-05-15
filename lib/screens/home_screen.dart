@@ -4,7 +4,8 @@ import 'package:food_delivery_laravel/constants.dart';
 import 'package:food_delivery_laravel/controllers/popular_product_controller.dart';
 import 'package:food_delivery_laravel/controllers/recommended_product_controller.dart';
 import 'package:food_delivery_laravel/models/product_model.dart';
-import 'package:food_delivery_laravel/screens/product_details_screen.dart';
+import 'package:food_delivery_laravel/screens/popular_product_details.dart';
+import 'package:food_delivery_laravel/screens/recommended_product_details.dart';
 import 'package:food_delivery_laravel/widgets/big_text.dart';
 import 'package:food_delivery_laravel/widgets/icon_text.dart';
 import 'package:food_delivery_laravel/widgets/small_text.dart';
@@ -151,7 +152,7 @@ class RecommendedItemsList extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Get.to(() => ProductDetailsScreen(data: data),
+        Get.to(() => RecommendedProductDetailsScreen(data: data),
             transition: Transition.fadeIn);
       },
       child: Container(
@@ -244,7 +245,7 @@ class HomeScreenBody extends StatelessWidget {
     return InkWell(
       onTap: () {
         Get.to(
-            () => ProductDetailsScreen(
+            () => PopularProductDetailsScreen(
                   data: data,
                 ),
             transition: Transition.leftToRightWithFade);

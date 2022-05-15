@@ -10,4 +10,4 @@
 
 # GET http://127.0.0.1:8000/api/v1/products/drinks
 
-GET https://food.hariomshop.com/api/v1/config/geocode-api?lat=27.7090319&lng=85.2911132
+GET https://foody.codersangam.com/api/v1/config/geocode-api?lat=27.7090319&lng=85.2911132

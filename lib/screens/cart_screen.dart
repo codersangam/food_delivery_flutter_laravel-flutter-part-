@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_laravel/controllers/auth_controller.dart';
+import 'package:food_delivery_laravel/controllers/cart_controller.dart';
 import 'package:food_delivery_laravel/controllers/location_controller.dart';
+import 'package:food_delivery_laravel/controllers/popular_product_controller.dart';
 import 'package:food_delivery_laravel/screens/address/add_address_screen.dart';
 import 'package:food_delivery_laravel/screens/auth/login_screen.dart';
 import 'package:food_delivery_laravel/screens/main_screen.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icon.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../colors.dart';
+import '../constants.dart';
 import '../widgets/app_icon.dart';
 
 class CartScreen extends StatelessWidget {
@@ -17,6 +21,7 @@ class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Stack(
         children: [
           Positioned(
@@ -26,17 +31,20 @@ class CartScreen extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                GetBuilder<PopularProductController>(
+                    builder: (popularProductController) {
+                  return AppIcon(
+                          iconColor: primaryColor, icon: LineIcons.shoppingCart)
+                      .badge(
+                    count: popularProductController.totalItems,
+                  );
+                }),
                 InkWell(
                   onTap: () {
-                    Get.back();
+                    Get.to(() => const MainScreen());
                   },
-                  child: AppIcon(
-                      iconColor: primaryColor, icon: Icons.arrow_back_ios_new),
-                ),
-                AppIcon(iconColor: primaryColor, icon: Icons.shopping_cart)
-                    .badge(
-                  count: 2,
-                ),
+                  child: AppIcon(iconColor: primaryColor, icon: LineIcons.home),
+                )
               ],
             ),
           ),
@@ -53,65 +61,109 @@ class CartScreen extends StatelessWidget {
               child: MediaQuery.removePadding(
                 context: context,
                 removeTop: true,
-                child: ListView.builder(
-                  itemCount: 10,
-                  itemBuilder: (context, index) {
-                    return SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 100,
-                            height: 100,
-                            margin: const EdgeInsets.only(
-                                bottom: 10, top: 15, left: 15, right: 15),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: primaryColor,
-                              image: const DecorationImage(
-                                image: NetworkImage(
-                                    'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80'),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Container(
-                              margin: const EdgeInsets.only(right: 15),
-                              height: 100,
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      'Title'.text.xl.bold.make(),
-                                      LineIcon(Icons.delete),
-                                    ],
+                child: GetBuilder<CartController>(builder: (cartController) {
+                  return GetBuilder<PopularProductController>(
+                      builder: (popularProductController) {
+                    return ListView.builder(
+                      itemCount: cartController.getCartItems.length,
+                      itemBuilder: (context, index) {
+                        var data = cartController.getCartItems[index];
+                        return SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 100,
+                                height: 100,
+                                margin: const EdgeInsets.only(
+                                    bottom: 10, top: 15, left: 15, right: 15),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: primaryColor,
+                                  image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: NetworkImage(
+                                      Constants.appBaseUrl +
+                                          "/uploads/" +
+                                          data.img!,
+                                    ),
                                   ),
-                                  'Spicy'.text.gray400.make(),
-                                  Row(
+                                ),
+                              ),
+                              Expanded(
+                                child: Container(
+                                  margin: const EdgeInsets.only(right: 15),
+                                  height: 100,
+                                  child: Column(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                        MainAxisAlignment.spaceEvenly,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      'Rs. 3500'.text.red500.xl.make(),
-                                      const VxStepper(
-                                        min: 1,
-                                        max: 20,
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          data.name!.text.xl.bold
+                                              .overflow(TextOverflow.ellipsis)
+                                              .maxLines(1)
+                                              .make()
+                                              .expand(),
+                                          LineIcon(LineIcons.trash),
+                                        ],
+                                      ),
+                                      'Spicy'.text.gray400.make(),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          'Rs. ${data.price!}'
+                                              .text
+                                              .red500
+                                              .xl
+                                              .make(),
+                                          Container(
+                                            height: 40,
+                                            width: 120,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              color: Colors.grey[200],
+                                            ),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                IconButton(
+                                                    onPressed: () {
+                                                      // popularProductController.setQuantity(false);
+                                                    },
+                                                    icon: const Icon(
+                                                        LineIcons.minus)),
+                                                data.quantity!.text.xl.make(),
+                                                IconButton(
+                                                    onPressed: () {
+                                                      // popularProductController.setQuantity(true);
+                                                    },
+                                                    icon: const Icon(
+                                                        LineIcons.plus)),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
                                       )
                                     ],
-                                  )
-                                ],
+                                  ),
+                                ),
                               ),
-                            ),
+                            ],
                           ),
-                        ],
-                      ),
+                        );
+                      },
                     );
-                  },
-                ),
+                  });
+                }),
               ),
             ),
           ),
