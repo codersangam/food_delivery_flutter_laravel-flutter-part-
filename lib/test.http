@@ -1,9 +1,3 @@
-# GET https://mvs.bslmeiyu.com/api/v1/products/popular
-
-
-# GET https://mvs.bslmeiyu.com/api/v1/products/recommended
-
-
 # GET http://127.0.0.1:8000/api/v1/products/recommended
 
 # GET http://127.0.0.1:8000/api/v1/products/popular
@@ -11,3 +5,24 @@
 # GET http://127.0.0.1:8000/api/v1/products/drinks
 
 GET https://foody.codersangam.com/api/v1/config/geocode-api?lat=27.7090319&lng=85.2911132
+
+###
+POST https://foody.codersangam.com/api/v1/auth/register
+Content-Type: application/json
+Authorization: token 
+
+{
+    "f_name":"lol",
+    "phone":"4234234234",
+    "email":"lol@gmail.com",
+    "password":"12345678"
+}
+
+###
+POST https://foody.codersangam.com/api/v1/auth/login
+Content-Type: application/json
+
+{
+    "email":"lol@gmail.com",
+    "password":"12345678"
+}

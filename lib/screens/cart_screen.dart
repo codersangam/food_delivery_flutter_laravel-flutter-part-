@@ -31,12 +31,11 @@ class CartScreen extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                GetBuilder<PopularProductController>(
-                    builder: (popularProductController) {
+                GetBuilder<CartController>(builder: (cartController) {
                   return AppIcon(
                           iconColor: primaryColor, icon: LineIcons.shoppingCart)
                       .badge(
-                    count: popularProductController.totalItems,
+                    count: cartController.totalItems,
                   );
                 }),
                 InkWell(
@@ -48,125 +47,160 @@ class CartScreen extends StatelessWidget {
               ],
             ),
           ),
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
-            top: 100,
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              decoration: const BoxDecoration(
-                color: Colors.white,
-              ),
-              child: MediaQuery.removePadding(
-                context: context,
-                removeTop: true,
-                child: GetBuilder<CartController>(builder: (cartController) {
-                  return GetBuilder<PopularProductController>(
-                      builder: (popularProductController) {
-                    return ListView.builder(
-                      itemCount: cartController.getCartItems.length,
-                      itemBuilder: (context, index) {
-                        var data = cartController.getCartItems[index];
-                        return SizedBox(
-                          width: MediaQuery.of(context).size.width,
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 100,
-                                height: 100,
-                                margin: const EdgeInsets.only(
-                                    bottom: 10, top: 15, left: 15, right: 15),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: primaryColor,
-                                  image: DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image: NetworkImage(
-                                      Constants.appBaseUrl +
-                                          "/uploads/" +
-                                          data.img!,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                child: Container(
-                                  margin: const EdgeInsets.only(right: 15),
-                                  height: 100,
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+          GetBuilder<CartController>(builder: (cartController) {
+            return cartController.getCartItems.isNotEmpty
+                ? Positioned(
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    top: 100,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                      ),
+                      child: MediaQuery.removePadding(
+                        context: context,
+                        removeTop: true,
+                        child: GetBuilder<CartController>(
+                            builder: (cartController) {
+                          return GetBuilder<PopularProductController>(
+                              builder: (popularProductController) {
+                            return ListView.builder(
+                              itemCount: cartController.getCartItems.length,
+                              itemBuilder: (context, index) {
+                                var data = cartController.getCartItems[index];
+                                return SizedBox(
+                                  width: MediaQuery.of(context).size.width,
+                                  child: Row(
                                     children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          data.name!.text.xl.bold
-                                              .overflow(TextOverflow.ellipsis)
-                                              .maxLines(1)
-                                              .make()
-                                              .expand(),
-                                          LineIcon(LineIcons.trash),
-                                        ],
-                                      ),
-                                      'Spicy'.text.gray400.make(),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          'Rs. ${data.price!}'
-                                              .text
-                                              .red500
-                                              .xl
-                                              .make(),
-                                          Container(
-                                            height: 40,
-                                            width: 120,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(20),
-                                              color: Colors.grey[200],
-                                            ),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                IconButton(
-                                                    onPressed: () {
-                                                      // popularProductController.setQuantity(false);
-                                                    },
-                                                    icon: const Icon(
-                                                        LineIcons.minus)),
-                                                data.quantity!.text.xl.make(),
-                                                IconButton(
-                                                    onPressed: () {
-                                                      // popularProductController.setQuantity(true);
-                                                    },
-                                                    icon: const Icon(
-                                                        LineIcons.plus)),
-                                              ],
+                                      Container(
+                                        width: 100,
+                                        height: 100,
+                                        margin: const EdgeInsets.only(
+                                            bottom: 10,
+                                            top: 15,
+                                            left: 15,
+                                            right: 15),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          color: primaryColor,
+                                          image: DecorationImage(
+                                            fit: BoxFit.cover,
+                                            image: NetworkImage(
+                                              Constants.appBaseUrl +
+                                                  "/uploads/" +
+                                                  data.img!,
                                             ),
                                           ),
-                                        ],
-                                      )
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Container(
+                                          margin:
+                                              const EdgeInsets.only(right: 15),
+                                          height: 100,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  data.name!.text.xl.bold
+                                                      .overflow(
+                                                          TextOverflow.ellipsis)
+                                                      .maxLines(1)
+                                                      .make()
+                                                      .expand(),
+                                                  LineIcon(LineIcons.trash),
+                                                ],
+                                              ),
+                                              'Spicy'.text.gray400.make(),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  'Rs. ${data.price!}'
+                                                      .text
+                                                      .red500
+                                                      .xl
+                                                      .make(),
+                                                  Container(
+                                                    height: 40,
+                                                    width: 120,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20),
+                                                      color: Colors.grey[200],
+                                                    ),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        IconButton(
+                                                            onPressed: () {
+                                                              cartController
+                                                                  .addItem(
+                                                                      data.productModel!,
+                                                                      -1);
+                                                            },
+                                                            icon: const Icon(
+                                                                LineIcons
+                                                                    .minus)),
+                                                        data.quantity!.text.xl
+                                                            .make(),
+                                                        IconButton(
+                                                            onPressed: () {
+                                                              cartController
+                                                                  .addItem(
+                                                                      data.productModel!,
+                                                                      1);
+                                                            },
+                                                            icon: const Icon(
+                                                                LineIcons
+                                                                    .plus)),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
                                     ],
                                   ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    );
-                  });
-                }),
-              ),
-            ),
-          ),
+                                );
+                              },
+                            );
+                          });
+                        }),
+                      ),
+                    ),
+                  )
+                : Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/images/empty_cart.png',
+                          height: 300,
+                          width: 300,
+                        ),
+                        'Cart is Empty'.text.make()
+                      ],
+                    ),
+                  );
+          }),
         ],
       ),
       bottomNavigationBar: Container(
@@ -182,15 +216,21 @@ class CartScreen extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(
-              height: 60,
-              width: 150,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: Colors.white,
-              ),
-              child: 'Rs. 3500'.text.xl2.bold.makeCentered(),
-            ),
+            GetBuilder<CartController>(builder: (cartController) {
+              return Container(
+                height: 60,
+                width: 150,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Colors.white,
+                ),
+                child: 'Rs. ${cartController.totalAmount}'
+                    .text
+                    .xl2
+                    .bold
+                    .makeCentered(),
+              );
+            }),
             InkWell(
               onTap: () {
                 if (Get.find<AuthController>().userLoggedIn()) {
