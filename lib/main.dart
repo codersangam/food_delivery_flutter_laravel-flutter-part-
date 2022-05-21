@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_laravel/colors.dart';
+import 'package:food_delivery_laravel/controllers/cart_controller.dart';
 import 'package:food_delivery_laravel/controllers/popular_product_controller.dart';
 import 'package:food_delivery_laravel/screens/splash/splash_screen.dart';
 import 'package:get/get.dart';
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    Get.find<CartController>().getCartData();
     Get.find<PopularProductController>().getPopularProductList();
     Get.find<RecommendedProductController>().getRecommendedProductList();
     return GetMaterialApp(

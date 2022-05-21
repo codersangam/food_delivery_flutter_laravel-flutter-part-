@@ -12,6 +12,9 @@ class CartController extends GetxController {
   final Map<int, CartModel> _items = {};
   Map<int, CartModel> get items => _items;
 
+  // For Storage and Shared Preferences
+  List<CartModel> storageItems = [];
+
   void addItem(ProductModel productModel, int quantity) {
     // print('length of items in cart is ' + _items.length.toString());
     var totalQuantity = 0;
@@ -26,6 +29,7 @@ class CartController extends GetxController {
           quantity: value.quantity! + quantity,
           isExist: true,
           time: DateTime.now(),
+          productModel: productModel,
         );
       });
       if (totalQuantity <= 0) {
@@ -48,6 +52,7 @@ class CartController extends GetxController {
               quantity: quantity,
               isExist: true,
               time: DateTime.now(),
+              productModel: productModel,
             );
           },
         );
@@ -55,6 +60,8 @@ class CartController extends GetxController {
         Get.snackbar('Error', 'You should at least 1 item in cart');
       }
     }
+    cartRepo.addToCartList(getCartItems);
+    update();
   }
 
   bool existInCart(ProductModel productModel) {
@@ -88,5 +95,28 @@ class CartController extends GetxController {
     return _items.entries.map((e) {
       return e.value;
     }).toList();
+  }
+
+  // Get Total Amount
+  int get totalAmount {
+    var totalAmount = 0;
+    _items.forEach((key, value) {
+      totalAmount += value.price! * value.quantity!;
+    });
+    return totalAmount;
+  }
+
+  List<CartModel> getCartData() {
+    setCart = cartRepo.getCartList();
+    return storageItems;
+  }
+
+  set setCart(List<CartModel> items) {
+    storageItems = items;
+    print("Length of Cart Items " "${storageItems.length}");
+    for (int i = 0; i < storageItems.length; i++) {
+      _items.putIfAbsent(
+          storageItems[i].productModel!.id!, () => storageItems[i]);
+    }
   }
 }

@@ -41,4 +41,7 @@ class Constants {
 
   // Get user address
   static String getUserAddressList = '/api/v1/customer/address/list';
+
+  // cart list key
+  static String cartList = "cart-list";
 }
